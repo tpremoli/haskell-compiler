@@ -16,7 +16,7 @@ import Data.Map
 type Vname = String
 
 -- Task 1.2 Define a type Val to model variable values.
-type Val = Integer
+type Val = Int
 
 -- Task 1.3 Define a type State for states which maps variable names to values.
 type State = (Map Vname Val)
@@ -26,17 +26,17 @@ data Instr = LOADI Val
         | LOAD Vname
         | ADD
         | STORE Vname
-        | JMP Integer
-        | JMPLESS Integer
-        | JMPGE Integer
+        | JMP Int
+        | JMPLESS Int
+        | JMPGE Int
         deriving (Eq, Read, Show)
 
 
 -- Task 1.5 Define a type Stack to model the stack.
-type Stack = [Integer]
+type Stack = [Int]
 
 -- Task 1.6 Define a type Config to model a configuration.
-type Config = (Integer, State, Stack)
+type Config = (Int, State, Stack)
 
 -- Task 1.7 Define a function iexec :: Instr → Config → Config to execute a single instruction.
 iexec :: Instr -> Config -> Config
@@ -44,14 +44,18 @@ iexec (LOADI x) (a,b,c)         = (a + 1, b, ((x):c))
 iexec (LOAD v) (a,b,c)          = let r = Data.Map.findWithDefault 0 v b
                                 in (a + 1, b, ((r):c))
 iexec (ADD) (a,b,c0:c1:c)       = (a + 1, b, ((c0+c1):c))
-iexec (STORE v) (a,b,c)         = (a + 1, (Data.Map.insert v (head c) b ), c)
+iexec (STORE v) (a,b,c0:c)         = (a + 1, (Data.Map.insert v c0 b ), c)
 iexec (JMP i) (a,b,c)           = (a + i + 1, b, c)
 iexec (JMPLESS i) (a,b,c0:c1:c) = if(c1<c0) then (a + i + 1, b, c) else (a + 1, b, c)
 iexec (JMPGE i) (a,b,c0:c1:c)   = if(c1>=c0) then (a + i + 1, b, c) else (a + 1, b, c)
 
 --TODO Task 1.8 Define a function exec :: [ Instr ] → Config → Config to execute a list of instructions.
 exec :: [Instr] -> Config -> Config
-exec = undefined
+exec (xs) (a,b,c) = if (length xs) > (a) then 
+                        let q = (iexec (xs !! a) (a,b,c))
+                        in exec xs q
+                        else (a,b,c)
+
 
 
 -- Some helpful test cases
@@ -64,4 +68,4 @@ exec = undefined
 --     print(iexec (JMPLESS 5) (0, empty, [5,6]) )
 --     print(iexec (JMPGE 5) (0, empty, [5,6]) )
 --     print(exec [LOADI 1, LOADI 2, ADD] (0, empty, []))
---     print(exec [LOADI 1, STORE "v1", LOADI 2, STORE "v2"] (0, empty, [])
+--     print(exec [LOADI 1, STORE "v1", LOADI 2, STORE "v2"] (0, empty, []))
