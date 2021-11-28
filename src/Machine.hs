@@ -16,7 +16,7 @@ import Data.Map
 type Vname = String
 
 -- Task 1.2 Define a type Val to model variable values.
-type Val = Int
+type Val = Integer
 
 -- Task 1.3 Define a type State for states which maps variable names to values.
 type State = (Map Vname Val)
@@ -24,19 +24,19 @@ type State = (Map Vname Val)
 --Task 1.4 Create a data type Instr which models all instructions supported by the machine.
 data Instr = LOADI Val 
         | LOAD Vname
-        | ADD Val Val
+        | ADD
         | STORE Vname
-        | JMP Int
-        | JMPLESS Int Val Val
-        | JMPGE Int Val Val
+        | JMP Integer
+        | JMPLESS Integer
+        | JMPGE Integer
         deriving (Eq, Read, Show)
 
 
---TODO Task 1.5 Define a type Stack to model the stack.
-type Stack = ()
+-- Task 1.5 Define a type Stack to model the stack.
+type Stack = [Integer]
 
---TODO Task 1.6 Define a type Config to model a configuration.
-type Config = ()
+-- Task 1.6 Define a type Config to model a configuration.
+type Config = (Integer, State, Stack)
 
 --TODO Task 1.7 Define a function iexec :: Instr → Config → Config to execute a single instruction.
 iexec :: Instr -> Config -> Config
