@@ -53,3 +53,15 @@ iexec (JMPGE i) (a,b,c0:c1:c)   = if(c1>=c0) then (a + i + 1, b, c) else (a + 1,
 exec :: [Instr] -> Config -> Config
 exec = undefined
 
+
+-- Some helpful test cases
+-- main = do
+--     print(iexec (LOADI 5) (0, empty, []) )
+--     print(iexec (LOAD "v1") (0, fromList [("v1",5)], []) )
+--     print(iexec ADD (0, empty, [5,6]) )
+--     print(iexec (STORE "x") (0, empty, [5]) )
+--     print(iexec (JMP 5) (0, empty, []) )
+--     print(iexec (JMPLESS 5) (0, empty, [5,6]) )
+--     print(iexec (JMPGE 5) (0, empty, [5,6]) )
+--     print(exec [LOADI 1, LOADI 2, ADD] (0, empty, []))
+--     print(exec [LOADI 1, STORE "v1", LOADI 2, STORE "v2"] (0, empty, [])
