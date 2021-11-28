@@ -44,7 +44,7 @@ iexec (LOADI x) (a,b,c)         = (a + 1, b, ((x):c))
 iexec (LOAD v) (a,b,c)          = let r = Data.Map.findWithDefault 0 v b
                                 in (a + 1, b, ((r):c))
 iexec (ADD) (a,b,c0:c1:c)       = (a + 1, b, ((c0+c1):c))
-iexec (STORE v) (a,b,c0:c)         = (a + 1, (Data.Map.insert v c0 b ), c)
+iexec (STORE v) (a,b,c0:c)      = (a + 1, (Data.Map.insert v c0 b ), c)
 iexec (JMP i) (a,b,c)           = (a + i + 1, b, c)
 iexec (JMPLESS i) (a,b,c0:c1:c) = if(c1<c0) then (a + i + 1, b, c) else (a + 1, b, c)
 iexec (JMPGE i) (a,b,c0:c1:c)   = if(c1>=c0) then (a + i + 1, b, c) else (a + 1, b, c)
