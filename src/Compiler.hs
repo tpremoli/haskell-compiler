@@ -16,7 +16,18 @@ acomp (Plus x y)    =   (acomp x) ++ (acomp y) ++ [ADD]
 
 --TODO Task 3.2
 bcomp :: BExp -> Bool -> Int -> [Instr]
-bcomp = undefined
+bcomp (Bc x) y z            =   if x == y
+                                    then [JMP z]
+                                    else []
+bcomp (Not x) y z           =   if x /= (Bc y)
+                                    then [JMP z]
+                                    else []
+bcomp (And x1 x2) True z    =   if x1 == x2 && x2 == (Bc True) 
+                                    then [JMP z] 
+                                    else []
+bcomp (And x1 x2) False z   =   if (x1 /= x2) || (x1 == x2 && x2 == (Bc False))
+                                    then [JMP z] 
+                                    else []
 
 --TODO Task 3.3
 ccomp :: Com -> [Instr]
