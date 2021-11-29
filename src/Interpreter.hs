@@ -11,17 +11,21 @@ module Interpreter
 import Data.Map
 import Machine
 
---TODO Task 2.1
-data AExp =
-    Aundefined
+-- Task 2.1
+data AExp = N Int
+        | V String
+        | Plus AExp AExp
     deriving (Eq, Read, Show)
 
 --TODO Task 2.2
 aval :: AExp -> State -> Val
 aval = undefined 
 
---TODO Task 2.1
-data BExp =
+-- Task 2.1
+data BExp = Bc Bool 
+        | Not Bool
+        | And Bool Bool
+        | Less AExp AExp
     Bundefined
     deriving (Eq, Read, Show)
 
@@ -29,9 +33,12 @@ data BExp =
 bval :: BExp -> State -> Bool
 bval = undefined 
 
---TODO Task 2.1
-data Com =
-    Cundefined
+-- Task 2.1
+data Com = Assign String AExp
+        | Seq Com Com
+        | If BExp Com Com
+        | While BExp Com
+        | SKIP
     deriving (Eq, Read, Show)
 
 --TODO Task 2.4
