@@ -10,7 +10,9 @@ import Interpreter
 
 --TODO Task 3.1
 acomp :: AExp -> [Instr]
-acomp = undefined
+acomp (N x)         =   [LOADI x]
+acomp (V x)         =   [LOAD x]
+acomp (Plus x y)    =   (acomp x) ++ (acomp y) ++ [ADD]
 
 --TODO Task 3.2
 bcomp :: BExp -> Bool -> Int -> [Instr]
