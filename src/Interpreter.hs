@@ -32,10 +32,10 @@ data BExp = Bc Bool
 
 -- Task 2.3
 bval :: BExp -> State -> Bool
-bval (Bc x) s                       = x
-bval (Not x) s                      = if (bval x s) then False else True
-bval (And x y) s                    = if (bval x s) == (bval y s) && (bval y s) == True then True else False
-bval (Less x y) s                   = if (aval x s) < (aval y s) then True else False   
+bval (Bc x) s       = x
+bval (Not x) s      = if (bval x s) then False else True
+bval (And x y) s    = if (bval x s) == (bval y s) && (bval y s) == True then True else False
+bval (Less x y) s   = if (aval x s) < (aval y s) then True else False   
 
 -- Task 2.1
 data Com = Assign String AExp
@@ -47,13 +47,13 @@ data Com = Assign String AExp
 
 -- Task 2.4
 eval :: Com -> State -> State
-eval (Assign v x) s             = (Data.Map.insert v (aval x s) s)
-eval (Seq c1 c2) s              = eval c2 (eval c1 s)
-eval (If b c1 c2) s             = if (bval b s) 
-                                    then eval c1 s
-                                    else eval c2 s
-eval (While b c) s              = if (bval b s)
-                                    then    let r = (eval c s)
-                                            in eval (While b c) r
-                                    else s
-eval SKIP s                     = s
+eval (Assign v x) s     = (Data.Map.insert v (aval x s) s)
+eval (Seq c1 c2) s      = eval c2 (eval c1 s)
+eval (If b c1 c2) s     = if (bval b s) 
+                                then eval c1 s
+                                else eval c2 s
+eval (While b c) s      = if (bval b s)
+                            then    let r = (eval c s)
+                                    in eval (While b c) r
+                            else s
+eval SKIP s             = s
