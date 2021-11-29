@@ -8,7 +8,7 @@ module Compiler
 import Machine
 import Interpreter
 
---TODO Task 3.1
+-- Task 3.1
 acomp :: AExp -> [Instr]
 acomp (N x)         =   [LOADI x]
 acomp (V x)         =   [LOAD x]
