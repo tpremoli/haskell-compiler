@@ -17,9 +17,11 @@ data AExp = N Int
         | Plus AExp AExp
     deriving (Eq, Read, Show)
 
---TODO Task 2.2
+-- Task 2.2
 aval :: AExp -> State -> Val
-aval = undefined 
+aval (N x) s                = x
+aval (V x) s                = Data.Map.findWithDefault 0 x s
+aval (Plus x y) s           = (aval x s) + (aval y s)
 
 -- Task 2.1
 data BExp = Bc Bool 
