@@ -46,6 +46,15 @@ data Com = Assign String AExp
         | SKIP
     deriving (Eq, Read, Show)
 
---TODO Task 2.4
+-- Task 2.4
 eval :: Com -> State -> State
-eval = undefined
+eval (Assign v x) s             = (Data.Map.insert v (aval x s) s)
+eval (Seq c1 c2) s              = eval c2 (eval c1 s)
+eval (If b c1 c2) s             = if (bval b s) 
+                                    then eval c1 s
+                                    else eval c2 s
+eval (While b c) s              = if (bval b s)
+                                    then    let r = (eval c s)
+                                            in eval (While b c) r
+                                    else s
+eval SKIP s                     = s
