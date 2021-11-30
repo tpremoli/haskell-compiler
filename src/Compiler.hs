@@ -28,6 +28,8 @@ bcomp (And x1 x2) True z    =   if x1 == x2 && x2 == (Bc True)
 bcomp (And x1 x2) False z   =   if (x1 /= x2) || (x1 == x2 && x2 == (Bc False))
                                     then [JMP z] 
                                     else []
+bcomp (Less x1 x2) True z   =   (acomp x1) ++ (acomp x2) ++ [JMPLESS z]
+bcomp (Less x1 x2) False z  =   (acomp x1) ++ (acomp x2) ++ [JMPGE z]
 
 --TODO Task 3.3
 ccomp :: Com -> [Instr]
