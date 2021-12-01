@@ -76,6 +76,17 @@ compiler = testGroup "Compiler Tests"
     [JMP 3,LOAD "x",LOADI 5,JMPLESS 3] @=? bcomp (And (Bc False) (Less (V "x") (N 5))) True 3
   , testCase "Boolean Expressions" $
     [JMP 6,LOAD "x",LOADI 5,JMPGE 3] @=? bcomp (And (Bc False) (Less (V "x") (N 5))) False 3
+  , testCase "Boolean Expressions TVT " $ -- TVT
+    [JMP 3,LOAD "x",LOADI 5,JMPLESS 3] @=? bcomp (And (Bc True) (Less (V "x") (N 5))) True 3
+  , testCase "Boolean Expressions TVF " $ -- TVF
+    [LOAD "x",LOADI 5,JMPGE 3] @=? bcomp (And (Bc True) (Less (V "x") (N 5))) False 3
+  , testCase "Boolean Expressions VTT " $ -- VTT (maybe remove last jmp)
+    [LOAD "x",LOADI 5,JMPLESS 3, JMP 3] @=? bcomp (And (Less (V "x") (N 5)) (Bc True)) True 3
+  , testCase "Boolean Expressions VFT " $ -- VFT
+    [LOAD "x",LOADI 5,JMPGE 3] @=? bcomp (And (Less (V "x") (N 5)) (Bc False)) True 3
+  , testCase "Boolean Expressions VFF" $ -- VFF
+    [LOAD "x",LOADI 5,JMPGE 3, JMP 3] @=? bcomp (And (Less (V "x") (N 5)) (Bc False)) False 3
+  
   , testCase "Commands" $
     [LOAD "u",LOADI 1,JMPGE 5,LOAD "u",LOADI 1,ADD,STORE "u",JMP 2,LOAD "u",STORE "v"] @=? ccomp (If (Less (V "u") (N 1)) (Assign "u" (Plus (V "u") (N 1))) (Assign "v" (V "u")))
   , testCase "Commands" $
