@@ -23,11 +23,15 @@ bcomp (Not x) y z           =   if x /= (Bc y)
                                     then [JMP z]
                                     else []
 bcomp (And (Bc x1) (Bc x2)) True z      =   if x1 ==  x2 && x2 == True 
+                                                then [JMP z] 
                                     then [JMP z] 
-                                    else []
+                                                then [JMP z] 
+                                                else []
 bcomp (And (Bc x1) (Bc x2)) False z     =   if not ( x1 == x2 && x2 == True )
+                                                then [JMP z] 
                                     then [JMP z] 
-                                    else []
+                                                then [JMP z] 
+                                                else []
 bcomp (And x1 x2) True z    =   []
 bcomp (And x1 x2) False z   =   []
 bcomp (Less x1 x2) True z   =   (acomp x1) ++ (acomp x2) ++ [JMPLESS z]
