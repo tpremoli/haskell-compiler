@@ -84,8 +84,6 @@ compiler = testGroup "Compiler Tests"
     [LOAD "x",LOADI 5,JMPGE 1, JMP 3] @=? bcomp (And (Less (V "x") (N 5)) (Bc True)) True 3
   , testCase "Boolean Expressions VFT " $ -- VFT
     [LOAD "x",LOADI 5,JMPGE 0] @=? bcomp (And (Less (V "x") (N 5)) (Bc False)) True 3
-  --, testCase "Boolean Expressions VFF" $ -- VFF
-  --  [LOAD "x",LOADI 5,JMPGE 3, JMP 3] @=? bcomp (And (Less (V "x") (N 5)) (Bc False)) False 3
   , testCase "Commands" $
     [LOAD "u",LOADI 1,JMPGE 5,LOAD "u",LOADI 1,ADD,STORE "u",JMP 2,LOAD "u",STORE "v"] @=? ccomp (If (Less (V "u") (N 1)) (Assign "u" (Plus (V "u") (N 1))) (Assign "v" (V "u")))
   , testCase "Commands" $
