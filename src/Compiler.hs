@@ -40,7 +40,9 @@ ccomp (If b x1 x2)          =   let i1 = ccomp x1   -- compile instruction 1
 ccomp (While b x)           =   let i = ccomp x     -- compile the instruction
                                     bc = bcomp b False (length (i) + 1) -- compile the boolean statement. 
                                     -- Compiling with False means that when it's no longer true, it'll jump over i.
-                                in  -- If TRUE, won't jump over i, and instead will execute i and return to boolean statement.
-                                    bc ++ i ++ [JMP (- ((length i) + (length bc) + 1))] 
+                                    -- If TRUE, won't jump over i, and instead will execute i and return to boolean statement.
+                                    j = - ((length i) + (length bc) + 1) -- j is the value to JMP back to bc
+                                in  
+                                    bc ++ i ++ [JMP j] 
 ccomp (SKIP)                =   []
 
