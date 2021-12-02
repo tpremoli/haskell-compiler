@@ -32,3 +32,4 @@ bcomp (Less x1 x2) False z  =   (acomp x1) ++ (acomp x2) ++ [JMPGE z]   -- false
 --TODO Task 3.3
 ccomp :: Com -> [Instr]
 ccomp (Assign n v)          =   (acomp v) ++ [STORE n]
+ccomp (Seq x1 x2)           =   ccomp x1 ++ ccomp x2
