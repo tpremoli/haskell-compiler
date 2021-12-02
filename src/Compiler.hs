@@ -29,7 +29,7 @@ bcomp (And x1 x2) y z       =   let r2 = bcomp x2 y z   -- compile both statemen
 bcomp (Less x1 x2) True z   =   (acomp x1) ++ (acomp x2) ++ [JMPLESS z] -- true meansJMPLSES
 bcomp (Less x1 x2) False z  =   (acomp x1) ++ (acomp x2) ++ [JMPGE z]   -- false means JMPGE
 
---TODO Task 3.3
+-- Task 3.3
 ccomp :: Com -> [Instr]
 ccomp (Assign n v)          =   (acomp v) ++ [STORE n]
 ccomp (Seq x1 x2)           =   ccomp x1 ++ ccomp x2
@@ -42,3 +42,5 @@ ccomp (While b x)           =   let i = ccomp x     -- compile the instruction
                                     -- Compiling with False means that when it's no longer true, it'll jump over i.
                                 in  -- If TRUE, won't jump over i, and instead will execute i and return to boolean statement.
                                     bc ++ i ++ [JMP (- ((length i) + (length bc) + 1))] 
+ccomp (SKIP)                =   []
+
