@@ -33,3 +33,7 @@ bcomp (Less x1 x2) False z  =   (acomp x1) ++ (acomp x2) ++ [JMPGE z]   -- false
 ccomp :: Com -> [Instr]
 ccomp (Assign n v)          =   (acomp v) ++ [STORE n]
 ccomp (Seq x1 x2)           =   ccomp x1 ++ ccomp x2
+ccomp (If b x1 x2)          =   let i1 = ccomp x1   -- compile instruction 1
+                                    i2 = ccomp x2   -- compile instruction 2
+                                in  -- Boolean if = True: do i1 then JMP i2. Boolean if = False: JMP i1 then do i2.
+                                    (bcomp b False ((length i1)+1)) ++ i1 ++ [JMP (length i2)] ++ i2
