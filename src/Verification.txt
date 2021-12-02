@@ -1,4 +1,17 @@
 exec (acomp a) (0,s,[]) == (length (acomp a), s, [aval a s])
 
 Proof:
---TODO Task 4
+case a = N x
+LHS = exec (acomp (N x)) (0,s,[])  
+[Applying acomp]    = exec [LOADI x] (0,s,[])
+[Applying iexec]    = let q = iexec ([LOADI x] !! 0) (0,s,[]) = (1,s,[x])
+                        in  exec [LOADI x] q
+[Applying exec]     = (1,s,[x])
+
+RHS = (length (acomp (N x), s, [aval (N x) s]))
+[Applying acomp]    = (length ([LOADI x]), s, [aval (N x) s])
+[Applying length]   = (1, s, [aval (N x) s)
+[Applying aval]     = (1, s, [x]) = LHS
+
+case a = V x
+case a = Plus N x V x
