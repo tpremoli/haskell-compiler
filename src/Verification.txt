@@ -1,17 +1,54 @@
 exec (acomp a) (0,s,[]) == (length (acomp a), s, [aval a s])
 
 Proof:
+(1)
 case a = N x
-LHS = exec (acomp (N x)) (0,s,[])  
+LHS                 = exec (acomp (N x)) (0,s,[])  
 [Applying acomp]    = exec [LOADI x] (0,s,[])
-[Applying iexec]    = let q = iexec ([LOADI x] !! 0) (0,s,[]) = (1,s,[x])
-                        in  exec [LOADI x] q
+[Applying exec]     = let q = iexec ([LOADI x] !! 0) (0,s,[]) 
+                            = (1,s,[x])
+                        in exec [LOADI x] q
 [Applying exec]     = (1,s,[x])
 
-RHS = (length (acomp (N x), s, [aval (N x) s]))
+RHS                 = (length (acomp (N x), s, [aval (N x) s]))
 [Applying acomp]    = (length ([LOADI x]), s, [aval (N x) s])
 [Applying length]   = (1, s, [aval (N x) s)
 [Applying aval]     = (1, s, [x]) = LHS
 
+(2)
 case a = V x
-case a = Plus N x V x
+LHS                 = exec (acomp (V x)) (0,s,[])  
+[Applying acomp]    = exec [LOAD x] (0,s,[])
+[Applying exec]     = let q = iexec ([LOAD x] !! 0) (0,s,[]) 
+                            = (1,s,[(Data.Map.findWithDefault 0 x s)])
+                        in exec [LOAD x] q
+[Applying exec]     = (1,s,[(Data.Map.findWithDefault 0 x s)])
+
+RHS                 = (length (acomp (V x), s, [aval (V x) s]))
+[Applying acomp]    = (length ([LOAD x]), s, [aval (V x) s])
+[Applying length]   = (1, s, [aval (V x) s)
+[Applying aval]     = (1, s, [Data.Map.findWithDefault 0 x s]) = LHS
+
+
+(3)
+case a = Plus x y
+LHS                                 = exec (acomp (Plus x y))) (0,s,[])  
+[Applying acomp]                    = exec ((acomp x) ++ (acomp y) ++ [ADD]) (0,s,[])
+[Applying (++)]                     = exec [(acomp x), (acomp y), ADD] (0,s,[])
+[Applying exec]                     = let q = iexec ([(acomp x), (acomp y), ADD] !! 0) (0,s,[]) 
+[Assuming x & y = LOADI or LOAD]            = (1,s,[x1])    
+                                        in exec [(acomp x), (acomp y), ADD] q
+[Applying exec]                     = let q = iexec ([(acomp x), (acomp y), ADD] !! 0) (1,s,[x1])
+[Assuming x & y = LOADI or LOAD]            = (2,s,[x1, y1])
+                                        in exec [(acomp x), (acomp y), ADD] q
+[Applying exec]                     = let q = iexec ([(acomp x), (acomp y), ADD] !! 0) (2,s,[x1, y1])
+[Assuming x & y = LOADI or LOAD]            = (3,s,[(x1+y1)])
+                                        in exec [(acomp x), (acomp y), ADD] q
+[Applying exec]                     = (3,s,[(x1+y1)])
+
+RHS                                 = (length (acomp (Plus x y), s, [aval (Plus x y) s]))
+[Applying acomp]                    = (length ((acomp x) ++ (acomp y) ++ [ADD]), s, [aval (Plus x y) s])
+[Applying (++)]                     = (length [(acomp x), (acomp y), ADD], s, [aval (Plus x y) s])
+[Assuming x & y = LOADI or LOAD]    = (3, s, [aval (Plus x y) s)
+[Applying aval]                     = (3, s, [(aval x s) + (aval y s)])
+[Assuming x & y = LOADI or LOAD]    = (3, s, [(x1 + y1)]) = LHS
