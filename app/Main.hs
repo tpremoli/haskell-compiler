@@ -2,9 +2,7 @@ module Main where
 
 import System.Environment
 import Compiler
-import Machine
 import Interpreter
-import Text.Read
 
 -- Task 3.4
 main :: IO ()
