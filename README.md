@@ -1,8 +1,16 @@
 # ECM2418 Coursework 2021
 
-This is the template project for the ECM2418 coursework for 2021.
-It consists of three folders:
-- *src* contains templates for the three main modules: Compiler.hs, Interpreter.hs, and StackMachine.hs.
+## What is this?
+
+This is my project submission for Exeter ECM2418 Computer Languages & Representations.
+It is a program that can run execute simple written machine code and instructions, run an interpreted language, and use a compiler to convert the interperted language into machine code.
+
+Machine.hs has the machine code functions. Interpreter.hs has the interpreter functions. Compiler.hs contains the compiiler functions. Verification.txt is a simple text proof that the compiler gives accurate results.
+
+## Setup
+
+This project consists of three folders:
+- *src* contains templates for the three main modules: Compiler.hs, Interpreter.hs, and Compiler.hs.
 - *test* contains a simple testsuite which allows you to check that your code satisfies minimum criteria.
 - *app* contains the main module which is invoked when the executable is executed.
 
